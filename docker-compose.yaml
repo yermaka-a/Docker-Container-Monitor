@@ -45,12 +45,18 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     networks:
       - pingerNetwork
-  # pinger:
-  #   build: ./pinger
-  #   environment:
-  #     NGINX_PORT: ${NGINX_PORT}
-  #   networks:
-  #     - pingerNetwork  
+  pinger:
+    build: ./pinger
+    environment:
+      NGINX_PORT: ${NGINX_PORT}
+    networks:
+      - pingerNetwork
+    depends_on:
+      - api
+      - db
+      - web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  
 networks:
   pingerNetwork:
 # volumes:
