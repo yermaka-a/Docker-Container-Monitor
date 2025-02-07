@@ -1,28 +1,46 @@
 
+
 services:
   api:
     build:  ./back
     restart: always
     ports:
-      - 9090:8080
+      - 3010:3010
     depends_on:
       - db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB} 
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    networks:
+      - pinger-network
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - api
+    networks:
+      - pinger-network
   db:
     image: postgres
     restart: always
     shm_size: 128mb
     ports:
-      - 5432:5432
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-volumes:
-  postgres_data:
+    networks:
+      - pinger-network
+
+networks:
+  pinger-network:
+# volumes:
+#   postgres_data:

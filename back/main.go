@@ -1,23 +1,26 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"back/db"
+	"back/requests"
 	"net/http"
 )
 
-// const (
-// 	host     = "localhost"
-// 	port     = 5432
-// 	user     = "yourusername"
-// 	password = "yourpassword"
-// 	dbname   = "yourdbname"
-// )
+const (
+	PORT = ":3010"
+)
 
 func main() {
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Hello World!")
+	db.InitDB()
+	http.HandleFunc("/containers", func(w http.ResponseWriter, r *http.Request) {
+		switch r.Method {
+		case http.MethodGet:
+			requests.GetContainers(w, r)
+		case http.MethodPost:
+			requests.UpdateContainers(w, r)
+		default:
+			http.Error(w, "Unsupported request method", http.StatusMethodNotAllowed)
+		}
 	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	http.ListenAndServe(PORT, nil)
 }
