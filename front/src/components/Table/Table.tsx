@@ -22,6 +22,10 @@ const Table: React.FC = () => {
       try {
           const containers = await fetchData<Container>()
           console.log(containers)
+          if (containers == null){
+            setContainers(containers)
+            return
+          }
           containers.sort((prev, next)=>prev.id - next.id)
           setContainers(containers)
         } 
@@ -42,8 +46,7 @@ const Table: React.FC = () => {
       return () => clearInterval(intervalId)
     }, []); 
     if (containers !== null)  return (
-      <div className="container mt-5">
-        <h2 className="mb-4">Таблица запущенных в данный момент контейнеров</h2>
+      <div className="container">
         <table className="table table-striped">
           <thead className="thead-dark">
             <tr>
@@ -66,8 +69,39 @@ const Table: React.FC = () => {
         </table>
       </div>
     )
-    else if (loading) return <div>Загрузка...</div>;
-    if (error) return <div>Ошибка: {error}</div>;
+    else if (loading) return (<div className="container">
+      <table className="table table-striped">
+        <thead className="thead-dark">
+          <tr>
+          <th scope="col">ID</th>
+            <th scope="col">IP</th>
+            <th scope="col">Время пинга в ms</th>
+            <th scope="col">Дата последней успешной попытки</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr key={0}>
+              <td colSpan={4}>{"В данный момент нет опрошенных контейнеров... Загрузка..."}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>)
+    if (error) return (
+    <div className="container">
+    <table className="table table-striped">
+        <thead className="thead-dark">
+          <tr>
+          <th scope="col">Возникла ошибка</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr key={0}>
+              <td colSpan={4}>{error}</td>
+            </tr>
+        </tbody>
+      </table>
+      </div>
+    )
  
 };
 

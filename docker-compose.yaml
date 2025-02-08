@@ -11,6 +11,23 @@ services:
     depends_on:
       - api
       - web
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - 5672:5672   
+      - 15672:15672      
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - pingerNetwork  
   web:
     build: ./nginx
     ports:
@@ -25,8 +42,10 @@ services:
     build:  ./back
     restart: always
     depends_on:
-      - db
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      db:
+        condition: service_started
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -34,6 +53,9 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: ${POSTGRES_HOST}
       FRONT_PORT: ${FRONT_PORT}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
     networks:
       - pingerNetwork
   adminer:
@@ -59,30 +81,23 @@ services:
     build: ./pinger
     networks:
       - pingerNetwork
+    restart: always
     environment:
       PINGER_WAIT: ${PINGER_WAIT}
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
     depends_on:
-      - api
-      - db
-      - web
-      - rabbitmq
+      rabbitmq:
+          condition: service_healthy
+      db:
+        condition: service_started
+      api:
+        condition: service_started
+      web:
+        condition: service_started
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-  rabbitmq:
-    image: rabbitmq:3-management
-    hostname: rabbitmq1
-    restart: always
-    ports:
-      - 5672:5672   
-      - 15672:15672      
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-    networks:
-      - pingerNetwork
 
 networks:
   pingerNetwork:

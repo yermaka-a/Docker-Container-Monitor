@@ -75,7 +75,6 @@ const (
 )
 
 func GetContainers() *[]Container {
-	// var db *sql.DB
 	db := connectDB()
 	rows, err := db.Query(getSQL)
 	if err != nil {

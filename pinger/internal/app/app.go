@@ -26,6 +26,7 @@ func pingContainer(ip string, i int) {
 	out, err := cmd.Output()
 	if err != nil {
 		log.Printf("Error pinging container %v:  %v", ip, err)
+		wg.Done()
 		return
 	}
 	re := regexp.MustCompile(`time=([\d.]+)`)

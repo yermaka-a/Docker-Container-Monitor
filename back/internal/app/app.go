@@ -2,6 +2,7 @@ package app
 
 import (
 	"back/internal/config"
+	"back/internal/db"
 	"back/internal/services"
 
 	"fmt"
@@ -26,6 +27,7 @@ func Start() {
 			http.Error(w, "Unsupported request method", http.StatusMethodNotAllowed)
 		}
 	})
+	db.InitDB()
 	conn, ch := services.ConnContainersRMQ()
 	defer conn.Close()
 	defer ch.Close()
@@ -33,7 +35,7 @@ func Start() {
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://pinger", "http://front", fmt.Sprintf("http://localhost:%s", FRONT_PORT)}, // Разрешенные домены
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
-		AllowedHeaders:   []string{"Content-Type"},
+		AllowedHeaders:   []string{"*"},
 		AllowCredentials: true,
 	})
 	http.ListenAndServe(PORT, c.Handler(mux))
