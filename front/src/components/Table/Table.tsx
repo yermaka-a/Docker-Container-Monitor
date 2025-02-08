@@ -27,6 +27,11 @@ const Table: React.FC = () => {
             return
           }
           containers.sort((prev, next)=>prev.id - next.id)
+          let i = 0
+          containers.map((el)=> {
+            i+=1
+            return el.id = i
+          })
           setContainers(containers)
         } 
        catch (error) {
