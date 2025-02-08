@@ -35,7 +35,7 @@ func pingContainer(ip string, i int) {
 		Id:       i,
 		Ip:       ip,
 		TimeMs:   matches[1],
-		PingDate: time.Now().String(),
+		PingDate: time.Now().Format(time.ANSIC),
 	})
 	mx.Unlock()
 	wg.Done()

@@ -4,7 +4,7 @@ services:
   front:
     build: ./front
     ports:
-      - 5137:81
+      - ${FRONT_PORT}:81
     restart: always
     networks:
       - pingerNetwork
@@ -32,6 +32,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB} 
       POSTGRES_PORT: ${POSTGRES_PORT}
       POSTGRES_HOST: ${POSTGRES_HOST}
+      FRONT_PORT: ${FRONT_PORT}
     networks:
       - pingerNetwork
   adminer:
