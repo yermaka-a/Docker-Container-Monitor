@@ -47,10 +47,10 @@ services:
       - pingerNetwork
   pinger:
     build: ./pinger
-    environment:
-      NGINX_PORT: ${NGINX_PORT}
     networks:
       - pingerNetwork
+    environment:
+      PINGER_WAIT: ${PINGER_WAIT}
     depends_on:
       - api
       - db
