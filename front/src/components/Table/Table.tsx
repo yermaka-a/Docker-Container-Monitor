@@ -69,7 +69,7 @@ const Table: React.FC = () => {
         </table>
       </div>
     )
-    else if (loading) return (<div className="container">
+    else if (loading || null) return (<div className="container">
       <table className="table table-striped">
         <thead className="thead-dark">
           <tr>
@@ -81,7 +81,7 @@ const Table: React.FC = () => {
         </thead>
         <tbody>
             <tr key={0}>
-              <td colSpan={4}>{"В данный момент нет опрошенных контейнеров... Загрузка..."}</td>
+              <td colSpan={4}>{"В данный момент нет опрошенных контейнеров..."}</td>
             </tr>
         </tbody>
       </table>
