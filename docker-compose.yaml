@@ -1,6 +1,16 @@
 
 
 services:
+  front:
+    build: ./front
+    ports:
+      - 5137:81
+    restart: always
+    networks:
+      - pingerNetwork
+    depends_on:
+      - api
+      - web
   web:
     build: ./nginx
     ports:
@@ -30,15 +40,13 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - api
+      - db
     networks:
       - pingerNetwork
   db:
     image: postgres
     restart: always
     shm_size: 128mb
-    # volumes:
-    #   - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -56,8 +64,7 @@ services:
       - db
       - web
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock  
+      - /var/run/docker.sock:/var/run/docker.sock
+      
 networks:
   pingerNetwork:
-# volumes:
-#   postgres_data:

@@ -4,6 +4,8 @@ import (
 	"back/db"
 	"back/requests"
 	"net/http"
+
+	"github.com/rs/cors"
 )
 
 const (
@@ -12,7 +14,8 @@ const (
 
 func main() {
 	db.InitDB()
-	http.HandleFunc("/containers", func(w http.ResponseWriter, r *http.Request) {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/containers", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
 			requests.GetContainers(w, r)
@@ -22,5 +25,11 @@ func main() {
 			http.Error(w, "Unsupported request method", http.StatusMethodNotAllowed)
 		}
 	})
-	http.ListenAndServe(PORT, nil)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://pinger", "http://front", "http://localhost:5137"}, // Разрешенные домены
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: true,
+	})
+	http.ListenAndServe(PORT, c.Handler(mux))
 }
