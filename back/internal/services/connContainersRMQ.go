@@ -1,27 +1,26 @@
 package services
 
 import (
+	"back/internal/config"
+	"back/internal/db"
 	"encoding/json"
 	"fmt"
 	"log"
-	"pinger/internal/config"
-	"pinger/internal/models"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func PostData(containersL []models.Container) {
+func ConnContainersRMQ() (*amqp.Connection, *amqp.Channel) {
 	c := config.New().RabbitMQConfig
 	conn, err := amqp.Dial(fmt.Sprintf("amqp://%s:%s@rabbitmq1:%s/", c.RABBITMQ_DEFAULT_USER, c.RABBITMQ_DEFAULT_PASS, c.RABBITMQ_PORT))
 	if err != nil {
 		log.Panicf("Failed to connect to RabbitMQ: %s", err)
 	}
-	defer conn.Close()
+
 	ch, err := conn.Channel()
 	if err != nil {
 		log.Panicf("Failed to open a channel: %s", err)
 	}
-	defer ch.Close()
 
 	q, err := ch.QueueDeclare(
 		"containers_queue",
@@ -34,23 +33,30 @@ func PostData(containersL []models.Container) {
 	if err != nil {
 		log.Panicf("Failed to declare a queue: %s", err)
 	}
-	jsonData, err := json.Marshal(containersL)
+
+	msgs, err := ch.Consume(
+		q.Name,
+		"",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
 	if err != nil {
-		fmt.Println("Error marshaling JSON:", err)
-		return
+		log.Panicf("Failed to register a consumer: %s", err)
 	}
-	err = ch.Publish(
-		"",     // обменник
-		q.Name, // имя очереди
-		false,  // обязательное
-		false,  // немедленное
-		amqp.Publishing{
-			ContentType: "application/json",
-			Body:        []byte(jsonData),
-		})
-	if err != nil {
-		log.Printf("Failed to publish a message: %s", err)
-		return
-	}
-	log.Printf("Sent message: %s", jsonData)
+
+	go func() {
+		var containers []db.Container
+		for msg := range msgs {
+			err := json.Unmarshal(msg.Body, &containers)
+			if err != nil {
+				log.Panicf("Failed unmarshal json: %v", err)
+			}
+			log.Printf("Received a message: %s", msg.Body)
+			db.UpdateContainers(&containers)
+		}
+	}()
+	return conn, ch
 }

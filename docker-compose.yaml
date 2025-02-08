@@ -26,6 +26,7 @@ services:
     restart: always
     depends_on:
       - db
+      - rabbitmq
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -60,12 +61,29 @@ services:
       - pingerNetwork
     environment:
       PINGER_WAIT: ${PINGER_WAIT}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
     depends_on:
       - api
       - db
       - web
+      - rabbitmq
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq1
+    restart: always
+    ports:
+      - 5672:5672   
+      - 15672:15672      
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - pingerNetwork
+
 networks:
   pingerNetwork:
+    driver: bridge

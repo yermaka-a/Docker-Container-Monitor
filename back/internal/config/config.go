@@ -12,12 +12,20 @@ type DBConfig struct {
 	POSTGRES_HOST     string
 }
 
+type RabbitMQConfig struct {
+	RABBITMQ_DEFAULT_USER string
+	RABBITMQ_DEFAULT_PASS string
+	RABBITMQ_PORT         string
+}
+
 type FrontConfig struct {
 	FRONT_PORT string
 }
+
 type Config struct {
-	DataBase    DBConfig
-	FrontConfig FrontConfig
+	DataBase       DBConfig
+	FrontConfig    FrontConfig
+	RabbitMQConfig RabbitMQConfig
 }
 
 func New() *Config {
@@ -31,6 +39,11 @@ func New() *Config {
 		},
 		FrontConfig: FrontConfig{
 			FRONT_PORT: getEnv("FRONT_PORT", "5137"),
+		},
+		RabbitMQConfig: RabbitMQConfig{
+			RABBITMQ_DEFAULT_USER: getEnv("RABBITMQ_DEFAULT_USER", "user"),
+			RABBITMQ_DEFAULT_PASS: getEnv("RABBITMQ_DEFAULT_PASS", "12345"),
+			RABBITMQ_PORT:         getEnv("RABBITMQ_PORT", "5672"),
 		},
 	}
 }

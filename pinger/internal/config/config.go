@@ -8,15 +8,26 @@ import (
 type PConfig struct {
 	PINGER_WAIT int64
 }
+type RabbitMQConfig struct {
+	RABBITMQ_DEFAULT_USER string
+	RABBITMQ_DEFAULT_PASS string
+	RABBITMQ_PORT         string
+}
 
 type Config struct {
 	PConfig
+	RabbitMQConfig
 }
 
 func New() *Config {
 	return &Config{
 		PConfig{
 			PINGER_WAIT: getEnvAsInt("PINGER_WAIT", 7),
+		},
+		RabbitMQConfig{
+			RABBITMQ_DEFAULT_USER: getEnv("RABBITMQ_DEFAULT_USER", "user"),
+			RABBITMQ_DEFAULT_PASS: getEnv("RABBITMQ_DEFAULT_PASS", "12345"),
+			RABBITMQ_PORT:         getEnv("RABBITMQ_PORT", "5672"),
 		},
 	}
 }
