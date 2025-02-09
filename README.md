@@ -3,11 +3,11 @@
 ## Оглавление
 
 1. [Общая информация 📑](#общая-информация-)
-2. [Архитектура проекта 🏢](#архитектура-проекта-)
+2. [Запуск проекта  в **Docker** 🐋](#запуск-проекта-в-docker-)
+3. [Архитектура проекта 🏢](#архитектура-проекта-)
    - [Сервисы](#сервисы)
-3. [Взаимодействие сервисов 🌐](#взаимодействие-сервисов-)
-4. [Настройки по умолчанию 🟢](#настройки-по-умолчанию-env-)
-5. [Запуск проекта  в **Docker** 🐋](#запуск-проекта-в-docker-)
+4. [Взаимодействие сервисов 🌐](#взаимодействие-сервисов-)
+5. [Настройки по умолчанию 🟢](#настройки-по-умолчанию-env-)
 6. [Заключение ✅](#заключение-)
 
 ## Общая информация 📑
@@ -43,71 +43,145 @@
 - Сервис базы данных, который хранит информацию о контейнерах, полученную от backend.
 - Обеспечивает надежное и эффективное хранение данных.
 
-### Структура
-#
-1. **root**
-- 📁 Корневая папка: `root/`
-    - 📁 back
-    - 📁 front
-    - 📁 nginx
-    - 📁 pinger
-    - 🗑️ .dockerignore
-    - ⚙️ .env
-    - 🗑️ .gitignore
-    - 📦 docker-compose.yaml
-    - 📜 README.md
-    #
-2. **backend**
-- 📁 back
-    - 📁 internal
-        - 📁 app
-            - 📄app.go
-        - 📁 config
-            - 📄 config.go
-        - 📁 db
-            - 📄 db.go
-            - 📄 models.go
-        - 📁 services
-            - 📄 connContainersRMQ.go
-            - 📄 getContainers.go
-            - 📄 updateContainers.go
-    - 🐳 Dockerfile
-    - 📄 main.go
-    #
-3. **frontend**
-- 📁 front
-    - 📁 src
-        - 📁 components
-           - 📁 Header
-                - 📄 Header.tsx
-           - 📁 Table
-               - 📄 Table.tsx
-               - 📄 types.ts
-        - 📄 App.tsx
-        - 📄 index.css
-        - 📄 main.tsx   
-    - 🐳 Dockerfile
-    - 📄 index.html
-    - 📄 nginx.conf
-#
-4. **proxy**
-- 📁 nginx
-    - 📄 default.conf
-    - 🐳 Dockerfile
-#
-5. **pinger**
-- 📁 pinger
-    - 📁 internal
-        - 📁 app
-            - 📄 app.go
-        - 📁 config
-            - 📄 config.go
-        - 📁 models
-            - 📄 models.go
-        - 📁 services
-            - 📄 services.go
-    - 🐳 Dockerfile
-    - 📄 main.go
+### Структура проекта
+<details>
+ <summary>🔍 Нажмите чтобы раскрыть</summary>
+
+<ol>
+    <li><strong>root</strong>
+        <ul>
+            <li>📁 Корневая папка: <code>root/</code>
+                <ul>
+                    <li>📁 back</li>
+                    <li>📁 front</li>
+                    <li>📁 nginx</li>
+                    <li>📁 pinger</li>
+                    <li>🗑️ .dockerignore</li>
+                    <li>⚙️ .env</li>
+                    <li>🗑️ .gitignore</li>
+                    <li>📦 docker-compose.yaml</li>
+                    <li>📜 README.md</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><strong>backend</strong>
+        <ul>
+            <li>📁 back
+                <ul>
+                    <li>📁 internal
+                        <ul>
+                            <li>📁 app
+                                <ul>
+                                    <li>📄 app.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 config
+                                <ul>
+                                    <li>📄 config.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 db
+                                <ul>
+                                    <li>📄 db.go</li>
+                                    <li>📄 models.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 services
+                                <ul>
+                                    <li>📄 connContainersRMQ.go</li>
+                                    <li>📄 getContainers.go</li>
+                                    <li>📄 updateContainers.go</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>🐳 Dockerfile</li>
+                    <li>📄 main.go</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><strong>frontend</strong>
+        <ul>
+            <li>📁 front
+                <ul>
+                    <li>📁 src
+                        <ul>
+                            <li>📁 components
+                                <ul>
+                                    <li>📁 Header
+                                        <ul>
+                                            <li>📄 Header.tsx</li>
+                                        </ul>
+                                    </li>
+                                    <li>📁 Table
+                                        <ul>
+                                            <li>📄 Table.tsx</li>
+                                            <li>📄 types.ts</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>📄 App.tsx</li>
+                            <li>📄 index.css</li>
+                            <li>📄 main.tsx</li>
+                        </ul>
+                    </li>
+                    <li>🐳 Dockerfile</li>
+                    <li>📄 index.html</li>
+                    <li>📄 nginx.conf</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><strong>proxy</strong>
+        <ul>
+            <li>📁 nginx
+                <ul>
+                    <li>📄 default.conf</li>
+                    <li>🐳 Dockerfile</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><strong>pinger</strong>
+        <ul>
+            <li>📁 pinger
+                <ul>
+                    <li>📁 internal
+                        <ul>
+                            <li>📁 app
+                                <ul>
+                                    <li>📄 app.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 config
+                                <ul>
+                                    <li>📄 config.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 models
+                                <ul>
+                                    <li>📄 models.go</li>
+                                </ul>
+                            </li>
+                            <li>📁 services
+                                <ul>
+                                    <li>📄 services.go</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>🐳 Dockerfile</li>
+                    <li>📄 main.go</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ol>
+
+</details>
 
 ### Схема работы
 <!-- ![Примерная схема работы проекта](./scheme-of-work.png) -->
