@@ -3,11 +3,11 @@
 ## Оглавление
 
 1. [Общая информация 📑](#общая-информация-)
-2. [Архитектура проекта 🏢](#архитектура-проекта-)
+2. [Архитектура проекта 🏢](#архитектура-проекта)
    - [Сервисы](#сервисы)
-     * [1. **Backend (Go) - RESTful API**](#backend-go---restful-api)
-     * [2. **Pinger (Go) - Асинхронный пингер**](#pinger-go---асинхронный-пингер)
-     * [3. **Frontend (React + TypeScript)**](#frontend-react--typescript)
+     * [1. **Backend (Go) - RESTful API**](#backend-go--restful-api)
+     * [2. **Pinger (Go) - Асинхронный пингер**](#pinger-go--асинхронный-пингер)
+     * [3. **Frontend (React + TypeScript)**](#frontend-react-typescript)
      * [4. **PostgreSQL**](#postgresql)
 3. [Взаимодействие сервисов 🌐](#взаимодействие-сервисов-)
 4. [Настройки по умолчанию 🟢](#настройки-по-умолчанию-env-)
