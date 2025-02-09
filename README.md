@@ -17,7 +17,7 @@
 ## Общая информация 📑
 Проект "Docker Container Monitor" представляет собой систему мониторинга Docker-контейнеров, реализованную с использованием современных технологий, таких как Go, PostgreSQL, Nginx, RabbitMQ и React с TypeScript. Все четыре основных сервиса работают внутри одной Docker-сети, управляемой с помощью `docker-compose`, что обеспечивает простоту развертывания и масштабирования.
 
-## Архитектура проекта  🏢
+## Архитектура проекта 🏢
 ### Сервисы
 1. **Backend (Go) - RESTful API**
 
@@ -46,6 +46,75 @@
 
 - Сервис базы данных, который хранит информацию о контейнерах, полученную от backend.
 - Обеспечивает надежное и эффективное хранение данных.
+
+### Структура
+#
+1. **root**
+- 📁 Корневая папка: `root/`
+    - 📁 back
+    - 📁 front
+    - 📁 nginx
+    - 📁 pinger
+    - 🗑️ .dockerignore
+    - ⚙️ .env
+    - 🗑️ .gitignore
+    - 📦 docker-compose.yaml
+    - 📜 README.md
+    #
+2. **backend**
+- 📁 back
+    - 📁 internal
+        - 📁 app
+            - 📄app.go
+        - 📁 config
+            - 📄 config.go
+        - 📁 db
+            - 📄 db.go
+            - 📄 models.go
+        - 📁 services
+            - 📄 connContainersRMQ.go
+            - 📄 getContainers.go
+            - 📄 updateContainers.go
+    - 🐳 Dockerfile
+    - 📄 main.go
+    #
+3. **frontend**
+- 📁 front
+    - 📁 src
+        - 📁 components
+           - 📁 Header
+                - 📄 Header.tsx
+           - 📁 Table
+               - 📄 Table.tsx
+               - 📄 types.ts
+        - 📄 App.tsx
+        - 📄 index.css
+        - 📄 main.tsx   
+    - 🐳 Dockerfile
+    - 📄 index.html
+    - 📄 nginx.conf
+#
+4. **proxy**
+- 📁 nginx
+    - 📄 default.conf
+    - 🐳 Dockerfile
+#
+5. **pinger**
+- 📁 pinger
+    - 📁 internal
+        - 📁 app
+            - 📄 app.go
+        - 📁 config
+            - 📄 config.go
+        - 📁 models
+            - 📄 models.go
+        - 📁 services
+            - 📄 services.go
+    - 🐳 Dockerfile
+    - 📄 main.go
+
+### Схема работы
+<!-- ![Примерная схема работы проекта](./scheme-of-work.png) -->
 
 ## Взаимодействие сервисов 🌐
 - **Nginx** выступает в роли обратного прокси-сервера, обеспечивая доступ к backend через внешний порт 3001.
