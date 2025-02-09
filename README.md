@@ -186,7 +186,7 @@
 ### Схема работы ⟲
 <details>
  <summary>🔍 Нажмите чтобы раскрыть</summary>
-![Примерная схема работы проекта](https://github.com/user-attachments/assets/7e167f73-f167-4c98-80ec-d16198de16db)
+<img alt="Примерная схема работы проекта" src="https://github.com/user-attachments/assets/7e167f73-f167-4c98-80ec-d16198de16db" />
 </details>
 ## Взаимодействие сервисов 🌐
 - **Nginx** выступает в роли обратного прокси-сервера, обеспечивая доступ к backend через внешний порт 3001.
