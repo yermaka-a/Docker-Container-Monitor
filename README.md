@@ -1,4 +1,4 @@
-# Описание проекта: Docker Container Monitor 🌐🐳
+# Docker Container Monitor 🌐🐳
 
 ## Оглавление
 
