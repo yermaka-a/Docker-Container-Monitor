@@ -189,7 +189,7 @@
 
 <details>
  <summary>🔍 Нажмите чтобы раскрыть</summary>
-<img alt="Примерная схема работы проекта" src="https://github.com/user-attachments/assets/7e167f73-f167-4c98-80ec-d16198de16db" />
+<img alt="Примерная схема работы проекта" src="https://github.com/user-attachments/assets/896eae20-06aa-4fa6-b742-41a4cdb29c27" />
 </details>
 
 ## Взаимодействие сервисов 🌐
