@@ -62,8 +62,8 @@ const Table: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {containers.map((item, index) => (
-              <tr key={index}>
+            {containers.map((item) => (
+              <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.ip}</td>
                 <td>{item.timeMs}</td>
